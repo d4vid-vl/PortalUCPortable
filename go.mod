@@ -1,4 +1,4 @@
-module AndroidUC
+module PortalUCPortable
 
 go 1.22.1
 

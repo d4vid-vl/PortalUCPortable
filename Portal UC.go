@@ -1,8 +1,8 @@
 package main
 
 import (
-	"AndroidUC/src/functions"
-	"AndroidUC/views"
+	"PortalUCPortable/src/functions"
+	"PortalUCPortable/views"
 
 	"fyne.io/fyne/v2/app"
 )
