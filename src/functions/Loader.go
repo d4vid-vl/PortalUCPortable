@@ -1,4 +1,4 @@
-package views
+package functions
 
 import (
 	"fyne.io/fyne/v2/container"
@@ -7,7 +7,7 @@ import (
 
 func LoaderView() *container.AppTabs {
 	tabs := container.NewAppTabs(
-		container.NewTabItem("Inicio", LoginView()),
+		container.NewTabItem("Inicio", widget.NewLabel("Bienvenido a Portal UC")),
 		container.NewTabItem("Datos Personales", widget.NewLabel("Datos Personales")),
 		container.NewTabItem("Información Académica", widget.NewLabel("Información Académica")),
 		container.NewTabItem("Información Financiera", widget.NewLabel("Información Financiera")),
