@@ -9,5 +9,6 @@ import (
 
 func main() {
 	a := app.New()
-	functions.Startup(a, views.LoaderView())
+	w := a.NewWindow("Portal UC")
+	functions.Startup(a, w, views.LoginView(w))
 }

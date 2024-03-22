@@ -4,9 +4,7 @@ import (
 	"fyne.io/fyne/v2"
 )
 
-func Startup(a fyne.App, widget fyne.CanvasObject) {
-	w := a.NewWindow("Portal UC")
-
+func Startup(a fyne.App, w fyne.Window, widget fyne.CanvasObject) {
 	w.Resize(fyne.NewSize(600, 600))
 	w.SetFixedSize(true)
 
