@@ -33,8 +33,9 @@ func LoginPortal(user string, password string) bool {
 
 	invalidCredentials := strings.Contains(string(data), "Authentication attempt has failed, likely due to invalid credentials. Please verify and try again.")
 	error_type := strings.Contains(string(data), "<div id=\"loginErrorsPanel\" class=\"banner banner-danger alert alert-danger banner-dismissible\">")
+	spam_type := strings.Contains(string(data), "status: 423")
 
-	if invalidCredentials || error_type {
+	if invalidCredentials || error_type || spam_type {
 		return true
 	} else {
 		return false
