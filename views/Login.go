@@ -3,7 +3,7 @@ package views
 import (
 	"PortalUCPortable/assets"
 	"PortalUCPortable/connections/api"
-	"PortalUCPortable/src/functions"
+	"PortalUCPortable/connections/database"
 
 	"fmt"
 	"image/color"
@@ -17,7 +17,7 @@ import (
 )
 
 func LoginView(w fyne.Window) fyne.CanvasObject {
-
+	// Setup inicial
 	inicio := widget.NewLabel("Bienvenido a Portal UC")
 	inicio.Alignment = fyne.TextAlignCenter
 	inicio.Importance = widget.HighImportance
@@ -26,13 +26,17 @@ func LoginView(w fyne.Window) fyne.CanvasObject {
 	autentificación := canvas.NewImageFromResource(assets.PUCLogin)
 	c_autentificación := container.NewGridWrap(fyne.NewSize(400, 125), autentificación)
 
+	loadedData := database.LoadUserData()
+
 	// Entries
 	input_user := widget.NewEntry()
-	input_user.Validator = validation.NewRegexp(`^[A-Za-z0-9_-]+$`, "El usuario solo puede tener letras, números, '-' y '_'")
+	input_user.Validator = validation.NewRegexp(`^[A-Za-z0-9_\-.,]+$`, "El usuario solo puede tener letras, números y '-_.,'")
 	input_user.SetPlaceHolder("Ejemplo: \"jmiranda\"")
+	input_user.Text = loadedData[0]
 	input_password := widget.NewPasswordEntry()
-	input_password.Validator = validation.NewRegexp(`^[A-Za-z0-9_\-!?#$%&/]+$`, "La contraseña solo puede tener letras, números, y algunos simbolos especiales")
+	input_password.Validator = validation.NewRegexp(`^[A-Za-z0-9_\-!?#$%&/+]+$`, "La contraseña solo puede tener letras, números, y algunos simbolos especiales")
 	input_password.SetPlaceHolder("Ejemplo: \"MiPerrito123\"")
+	input_password.Text = loadedData[1]
 
 	// Labels de alertas
 	labelError := canvas.NewText("Credenciales Inválidas", color.NRGBA{R: 149, G: 0, B: 0, A: 255})
@@ -42,21 +46,29 @@ func LoginView(w fyne.Window) fyne.CanvasObject {
 
 	// Check para guardar contraseña para otra futura sesión
 	checkDatos := widget.NewCheck("Guardar Datos", func(bool) {
-		// TODO: Hacer un guardar contraseña versatil y útil
 	})
 
 	// Botón para loguearse
 	button_login := widget.NewButton("Iniciar Sesión", func() {
+		guardarDatos := checkDatos.Checked
 		resp := api.LoginPortal(input_user.Text, input_password.Text)
 		fmt.Println(resp)
 		if resp {
 			labelError.Show()
 			labelÉxito.Hide()
 		} else {
-			labelError.Hide()
-			labelÉxito.Show()
-			time.Sleep(2 * time.Second)
-			w.SetContent(functions.LoaderView())
+			if guardarDatos {
+				database.SaveUserData(input_user.Text, input_password.Text)
+				labelError.Hide()
+				labelÉxito.Show()
+				time.Sleep(2 * time.Second)
+				w.SetContent(Loader())
+			} else {
+				labelError.Hide()
+				labelÉxito.Show()
+				time.Sleep(2 * time.Second)
+				w.SetContent(Loader())
+			}
 		}
 	})
 	button_color := canvas.NewRectangle(color.NRGBA{R: 0, G: 149, B: 0, A: 100})
