@@ -46,6 +46,7 @@ func generateAndStoreAESKey(size int) error {
 	return nil
 }
 
+// Cargar llave del archivo
 func loadKeyFromFile() error {
 	key, err := os.ReadFile(AESKeyFileName)
 	if err != nil {
@@ -96,7 +97,7 @@ func loadNonceFromFile() error {
 	return nil
 }
 
-// * Inicializar el nonce al empezar el programa
+// * Inicializar el nonce y llave al empezar el programa
 func init() {
 	// Intentar cargar el nonce desde el archivo
 	err := loadNonceFromFile()
