@@ -34,7 +34,7 @@ func LoginView(w fyne.Window) fyne.CanvasObject {
 	input_user.SetPlaceHolder("Ejemplo: \"jmiranda\"")
 	input_user.Text = loadedData[0]
 	input_password := widget.NewPasswordEntry()
-	input_password.Validator = validation.NewRegexp(`^[A-Za-z0-9_\-!?#$%&/+]+$`, "La contraseña solo puede tener letras, números, y algunos simbolos especiales")
+	input_password.Validator = validation.NewRegexp(`^[A-Za-z0-9_\-!?#$%&/+*@]+$`, "La contraseña solo puede tener letras, números, y algunos simbolos especiales")
 	input_password.SetPlaceHolder("Ejemplo: \"MiPerrito123\"")
 	input_password.Text = loadedData[1]
 
