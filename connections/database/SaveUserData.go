@@ -15,11 +15,13 @@ func SaveUserData(user string, password string) {
 	// Manejo de la información del Usuario
 	eUser := encryption(user)
 	ePassword := encryption(password)
-	UserData := User{Username: eUser, Password: ePassword}
+	UserData := User{
+		Username: eUser,
+		Password: ePassword,
+	}
 
-	bytes, _ := json.MarshalIndent(UserData, "", "\t")
+	bytes, _ := json.MarshalIndent(UserData, "", "	")
 
-	jsonData := string(bytes)
 	userDataFile := "connections/database/json/UserInfo.json"
 
 	// Revisa si el archivo JSON está creado
@@ -29,13 +31,12 @@ func SaveUserData(user string, password string) {
 			return
 		} else { // En cambio si no es la misma, sobreescribirá la información anterior
 			// Abre el archivo y borra los contenidos de este
-			file, err := os.OpenFile(userDataFile, os.O_WRONLY|os.O_TRUNC, 0644)
+			_, err := os.OpenFile(userDataFile, os.O_WRONLY|os.O_TRUNC, 0644)
 			if err != nil {
 				fmt.Println("Error al abrir el JSON: ", err)
 			}
 			// Escribe la información en el JSON
-			encoder := json.NewEncoder(file)
-			if err := encoder.Encode(jsonData); err != nil {
+			if err := os.WriteFile(userDataFile, bytes, 0644); err != nil {
 				fmt.Println("Error al escribir en el JSON: ", err)
 				return
 			}
@@ -50,8 +51,7 @@ func SaveUserData(user string, password string) {
 		defer file.Close()
 
 		// Escribe la información en el JSON
-		encoder := json.NewEncoder(file)
-		if err := encoder.Encode(jsonData); err != nil {
+		if err := os.WriteFile(userDataFile, bytes, 0644); err != nil {
 			fmt.Println("Error al escribir en el JSON: ", err)
 			return
 		}
